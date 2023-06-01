@@ -8,7 +8,11 @@ public class Programa {
 
 		Random random = new Random();
 
-		for (int i = 0; i < 51000000; i++) {
+		int quantidade = args.length == 0 ? 51_000_000 : Integer.parseInt(args[0]);
+		if (quantidade < 0) {
+			throw new IllegalArgumentException("A quantidade deve ser não negativa.");
+		}
+		for (int i = 0; i < quantidade; i++) {
 			int numeroSorteado = random.nextInt(60) + 1;
 			lista.adicionaNoFinal(numeroSorteado);
 		}

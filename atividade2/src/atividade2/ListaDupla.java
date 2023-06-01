@@ -5,105 +5,46 @@ public class ListaDupla {
 	Celula ultima;
 	int totalDeElementos = 0;
 
+	private static final int[] SEQUENCIA = { 1, 15, 16, 25, 32, 36 };
+
 	public void encontrarSequenciaDireta() {
-		int[] vetor = { 1, 15, 16, 25, 32, 36 };
-		int quantidadeDeSequencias = 0;
-		int[] vetorPosicao = null;
-
 		System.out.println("Direta: ");
-
-		for (int i = 0; i < tamanho() - 1; i++) {
-
-			if (pegaElemento(i) == vetor[0]) {
-				i++;
-				if (pegaElemento(i) == vetor[1]) {
-					i++;
-					if (pegaElemento(i) == vetor[2]) {
-						i++;
-						if (pegaElemento(i) == vetor[3]) {
-							i++;
-							if (pegaElemento(i) == vetor[4]) {
-								i++;
-								if (pegaElemento(i) == vetor[5]) {
-									quantidadeDeSequencias++;
-									vetorPosicao = new int[] { i - 5, i - 4, i - 3, i - 2, i - 1, i };
-									i++;
-								} else {
-									i--;
-								}
-								if (quantidadeDeSequencias > 0) {
-									System.out.println();
-									System.out.println(quantidadeDeSequencias + "º sequencia: ");
-									for (int j = 0; j < vetorPosicao.length; j++) {
-										System.out.print(vetorPosicao[j] + " ");
-									}
-									System.out.println();
-								}
-							} else {
-								i--;
-							}
-						} else {
-							i--;
-						}
-					} else {
-						i--;
-					}
-				} else {
-					i--;
-				}
-			}
-
-		}
-		System.out.println();
-		System.out.println("Quantidade de Sequencias = " + quantidadeDeSequencias);
+		encontrarSequencias(primeira, 0, 1);
 	}
 
 	public void encontrarSequenciaInversa() {
-		int[] vetor = { 1, 15, 16, 25, 32, 36 };
-		int quantidadeDeSequencias = 0;
-		int[] vetorPosicao = null;
-
 		System.out.println("Inversa: ");
+		encontrarSequencias(ultima, tamanho() - 1, -1);
+	}
 
-		for (int i = tamanho() - 1; i > 0; i--) {
-			if (pegaElemento(i) == vetor[0]) {
-				i--;
-				if (pegaElemento(i) == vetor[1]) {
-					i--;
-					if (pegaElemento(i) == vetor[2]) {
-						i--;
-						if (pegaElemento(i) == vetor[3]) {
-							i--;
-							if (pegaElemento(i) == vetor[4]) {
-								i--;
-								if (pegaElemento(i) == vetor[5]) {
-									quantidadeDeSequencias++;
-									vetorPosicao = new int[] { i + 5, i + 4, i + 3, i + 2, i + 1, i };
-									i--;
-								}
-								if (quantidadeDeSequencias > 0) {
-									System.out.println();
-									System.out.println(quantidadeDeSequencias + "º sequencia: ");
-									for (int j = 0; j < vetorPosicao.length; j++) {
-										System.out.print(vetorPosicao[j] + " ");
-									}
-									System.out.println();
-								}
-							} else {
-								i++;
-							}
-						} else {
-							i++;
-						}
-					} else {
-						i++;
-					}
-				} else {
-					i++;
-				}
+	private void encontrarSequencias(Celula atual, int posicao, int passo) {
+		int quantidadeDeSequencias = 0;
+		int encontrados = 0;
+		while (atual != null) {
+			int elemento = atual.getElemento();
+			if (elemento == SEQUENCIA[encontrados]) {
+				encontrados++;
+			} else {
+				// Só o primeiro número pode reiniciar a sequência.
+				encontrados = elemento == SEQUENCIA[0] ? 1 : 0;
 			}
 
+			if (encontrados == SEQUENCIA.length) {
+				quantidadeDeSequencias++;
+				System.out.println();
+				System.out.println(quantidadeDeSequencias + "º sequencia: ");
+				int inicio = posicao - (SEQUENCIA.length - 1) * passo;
+				for (int i = 0; i < SEQUENCIA.length; i++) {
+					System.out.print((inicio + i * passo) + " ");
+				}
+				System.out.println();
+				encontrados = 0;
+			}
+
+			atual = passo == 1 ? atual.getProxima() : atual.getAnterior();
+			posicao += passo;
 		}
+
 		System.out.println();
 		System.out.println("Quantidade de Sequencias = " + quantidadeDeSequencias);
 	}
